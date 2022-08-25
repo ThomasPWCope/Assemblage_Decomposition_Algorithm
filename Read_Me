@@ -1,0 +1,116 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Read Me: Perturbation Decomposition Algorithm.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Requirements to run : QETLAB (http://www.qetlab.com/Main_Page) 
+                      cvx (http://cvxr.com/cvx)
+
+
+
+This folder contains three implementations of a perturbation-based recursion algorithm,
+designed to decompose assemblages into extremal assemblages. I summarise the three below.
+
+I then briefly run through what each file offered here does.
+
+NOTE: Assemblages are 4D arrays, whose dimensions are (in order) #outputs, #inputs, dimension, dimension.
+      In particular, to isolate a single substate in matrix form, one should write e.g. squeeze(array(1,1,:,:)).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Variants of the Algorithm:
+
+
+1) original: this version is just the algorithm naively implemented. Therefore, for complicated cases
+numerical problems such as small negative eigenvalues or slight non-Hermicity may cause it to fail. 
+However, that means that this version is the fastest.
+
+2) Hermitian (recommended): At every step of the algorithm, all substates are made Hermitian again; 
+this deals with many of the problems encountered when running the original. However, small negative 
+eigenvalues may still cause it to give an error.
+
+3)reduced_rank : Here small (with a user chosen tolerance) eigenvalues are removed; this avoids any problems
+with negative eigenvalues, but seems to be at the cost of some precision. Useful when the Hermitian case 
+cannot solve the problem.
+
+A comparison of these techniques can be found in the file "Method Comparison"
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Since the files within each algorithm variant are well commented, I will not describe them here. 
+However, I will describe the contents of the other folders.
+
+
+%%%%%%%%%
+Examples:
+%%%%%%%%%
+
+Method_Comparison: An analysis of the three above approaches to various assemblages;
+gives an idea of their precision and success.
+
+pentagon_example: Example 1 of the main paper.
+
+tetrahedon_example: Example 2 of the main paper.
+
+Noisy_Qutrit_MUB: Example 3 of the main paper.
+
+
+
+
+%%%%%%%%%%%%%%%%%
+Useful_Functions:
+%%%%%%%%%%%%%%%%%
+
+congregate_extremals:
+
+This function takes in a decomposition into extremal assemblages, and conglomerates all instances of identical extremal assemblages
+(up to user specified accuracy). Recommended running.
+
+assemblage_analysis:
+
+Take in a decomposition into extremal assemblages, and analysis its "correctness"; both in terms of whether the extremal assemblages are 
+valid (positive, Hermitian, no-signalling) and whether they reproduce the original assemblage. Worth running to check your results.
+
+extremal_check_only:
+
+Does not decompose an assemblage, but just checks whether it is extremal or not. If one just wants to know this information, then
+this function should be used.
+
+%%%%%%%%%%%%%%%%%
+Helper Functions
+%%%%%%%%%%%%%%%%
+
+identity_assemblage_creator:
+
+Creates an assemblage whose subnormalised states are all proportional to the identity operator i.e. white noise.
+
+MUBPrime: Creates an array whose elements are the effects of the n+1 MUBs in dimension n (prime dimensions only)
+
+MUBAssemPrime: Creates an array whose subnormalised states are MUBs of dimension n applied to the n-dimensional
+maximally entangled state.
+
+OpToVec: Take a HERMITIAN operator, and turns it into a length d^2 vector. Does it such that Hilbert-Schmidt norm == vector norm.
+VecToOp: Takes a length d^2 vector, and turns in into a HERMITIAN operator. Does it such that vector norm == Hilbert-Schmidt norm.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+If you have any questions or problems, please feel to contact me (Thomas Cope) via my offical university address, which can be found on the Leibniz university website.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
